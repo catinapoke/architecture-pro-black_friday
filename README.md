@@ -1,10 +1,16 @@
 # Проектная работа 4
 
-# Задание 1
+# Итоговая схема
 
-![](./task1/task1.drawio.png)
+![](./task6/task6.drawio.png)
 
-## Как запустить
+## Как запустить задание 4
+
+Заходим в папку sharding-repl-cache
+
+```shell
+cd sharding-repl-cache
+```
 
 Запускаем mongodb и приложение
 
@@ -12,7 +18,7 @@
 docker compose up -d
 ```
 
-Заполняем mongodb данными
+Выполняем все настройки после успешного запуска docker compose
 
 ```shell
 ./scripts/mongo-init.sh
