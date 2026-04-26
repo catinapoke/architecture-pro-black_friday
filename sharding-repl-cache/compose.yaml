@@ -22,8 +22,10 @@ services:
         "27017"
       ] 
     healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", "mongosh", "--port", "27017", "--eval", "db.adminCommand('ping')" ]
       interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 10s
 
    #1-й шард 
@@ -48,8 +50,10 @@ services:
         "27011"
       ]
     healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", "mongosh", "--port", "27011", "--eval", "db.adminCommand('ping')" ]
       interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 10s
 
   #1-й шард 
@@ -74,8 +78,10 @@ services:
         "27012"
       ]
     healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", "mongosh", "--port", "27012", "--eval", "db.adminCommand('ping')" ]
       interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 10s
 
   shard1-3:
@@ -99,8 +105,10 @@ services:
         "27013"
       ]
     healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", "mongosh", "--port", "27013", "--eval", "db.adminCommand('ping')" ]
       interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 10s
 
   #2-й шард 
@@ -125,8 +133,10 @@ services:
         "27021"
       ]
     healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", "mongosh", "--port", "27021", "--eval", "db.adminCommand('ping')" ]
       interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 10s
 
   shard2-2:
@@ -150,8 +160,10 @@ services:
         "27022"
       ]
     healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", "mongosh", "--port", "27022", "--eval", "db.adminCommand('ping')" ]
       interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 10s
 
   shard2-3:
@@ -175,8 +187,10 @@ services:
         "27023"
       ]
     healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", "mongosh", "--port", "27023", "--eval", "db.adminCommand('ping')" ]
       interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 10s
 
   #роутер
@@ -184,6 +198,9 @@ services:
     image: mongo:latest
     container_name: mongos_router
     restart: always
+    depends_on:
+      configSrv:
+        condition: service_healthy
     ports:
       - "27020:27020"
     networks:
@@ -199,8 +216,10 @@ services:
         "27020"
       ]
     healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      test: [ "CMD", "mongosh", "--port", "27020", "--eval", "db.adminCommand('ping')" ]
       interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 10s
 
   redis:
@@ -222,15 +241,18 @@ services:
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
+      timeout: 5s
+      retries: 10
       start_period: 10s
 
   pymongo_api:
     container_name: pymongo_api
-    build: 
-      context: api_app
-      dockerfile: Dockerfile
+    image: kazhem/pymongo_api:1.0.0
     depends_on:
-      - mongos_router
+      mongos_router:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     ports:
       - 8080:8080
     networks:

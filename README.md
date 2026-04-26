@@ -18,7 +18,7 @@ cd sharding-repl-cache
 docker compose up -d
 ```
 
-Выполняем все настройки после успешного запуска docker compose
+Выполняем все настройки после успешного запуска docker compose (все контейнеры запущены - ждать где то пол-минуты)
 
 ```shell
 ./scripts/mongo-init.sh
