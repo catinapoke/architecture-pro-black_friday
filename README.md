@@ -1,6 +1,16 @@
-# pymongo-api
+# Проектная работа 4
 
-## Как запустить
+# Итоговая схема
+
+![](./task6/task6.drawio.png)
+
+## Как запустить задание 4
+
+Заходим в папку sharding-repl-cache
+
+```shell
+cd sharding-repl-cache
+```
 
 Запускаем mongodb и приложение
 
@@ -8,7 +18,7 @@
 docker compose up -d
 ```
 
-Заполняем mongodb данными
+Выполняем все настройки после успешного запуска docker compose (все контейнеры запущены - ждать где то пол-минуты)
 
 ```shell
 ./scripts/mongo-init.sh
